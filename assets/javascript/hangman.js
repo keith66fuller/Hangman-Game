@@ -2,29 +2,63 @@ var tries = 0;
 var wins = 0;
 var answer = "";
 var guesses = 0;
-var word = "elephant";
+var myWord = "elephant";
 
-maxTries = word.length;
+for (var i =1; i<=myWord.length; i++) {
+    answer += "_";
+}
+
+maxTries = myWord.length;
 
 var varFields = {
+    "hmLabelWins" : null,
     "hmWins" : wins,
     "hmAnswer" : answer,
+    "hmLabelGuessesLeft" : null,
     "hmGuessesLeft" : function() {
-        return maxTries-tries
+        return this.maxTries-this.tries
     },
-    "hmLettersGuessed" : wins,
+    "hmLabelWins" : null,
+    "hmLabelLettersGuessed" : null,
+    "hmLettersGuessed" : null,
 }
 
-for (var element in varFields) {
-    console.log("ELEMENT " + element);
-    var x = document.getElementById(element);
-    // x.style.display = none;
-    console.log("ELEMENT " + x);
-}
 
-document.onkeypress = function(event) {
-    if (!wins) {
-        console.log("game is starting");
+function peekaboo(color) {
+    for (var element in varFields) {
+        // console.log("ELEMENT " + element);
+        var x = document.getElementById(element);
+        x.style.color = color;
+        // console.log("ELEMENT " + x);
     }
+}
 
+function showValues() {
+    for (var element in varFields) {
+        
+        console.log("ELEMENT " + element + " --> " + varFields.element);
+        if (varFields.element != null) {
+            var x = document.getElementById(element);
+            x.textContent = varFields.element;
+            console.log("ELEMENT " + x);
+        }
+
+    }
+}
+
+
+
+
+
+window.onload = function() {
+    peekaboo('black');
+
+    document.onkeypress = function(event) {
+        if (!tries) {
+            console.log("game is starting");
+        }
+
+    showValues();
+    peekaboo('white');
+    }
 }
