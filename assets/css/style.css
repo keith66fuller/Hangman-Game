@@ -1,0 +1,15 @@
+body {
+    background-image: "./assets/images/banner.jpg";
+    background-color: black;
+    color:  white;
+    
+}
+
+.col-* {
+    text-align: center;
+
+}
+
+.col-10 {
+    line-height: 40px;
+}

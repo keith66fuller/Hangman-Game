@@ -1,31 +1,30 @@
-var tries=8;
-var word="elephant";
-var blanks = "";
-var key;
+var tries = 0;
+var wins = 0;
+var answer = "";
+var guesses = 0;
+var word = "elephant";
 
-for (var i = 0 ; i <= word.length ; i++) {
-    blanks += "_";
+maxTries = word.length;
+
+var varFields = {
+    "hmWins" : wins,
+    "hmAnswer" : answer,
+    "hmGuessesLeft" : function() {
+        return maxTries-tries
+    },
+    "hmLettersGuessed" : wins,
 }
 
+for (var element in varFields) {
+    console.log("ELEMENT " + element);
+    var x = document.getElementById(element);
+    // x.style.display = none;
+    console.log("ELEMENT " + x);
+}
 
+document.onkeypress = function(event) {
+    if (!wins) {
+        console.log("game is starting");
+    }
 
-
-
-alert("Press any key to begin.");
-
-
-    alert("Your word is " + blanks.length + " letters long.");
-    alert("Here is your word -- > " + blanks)
-
-    while (tries != 0) {
-
-
-        console.log("You have " + tries + " tries left.  Press a letter key to guess the next letter!");
-
-        document.onkeypress = function(event){
-            alert("You pressed " + event.key + ".");
-        };
-        tries --;    
-
-        
-    };
+}
