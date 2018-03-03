@@ -13,3 +13,8 @@ body {
 .col-10 {
     line-height: 40px;
 }
+
+#hmAnswer,#hmLettersGuessed {
+    letter-spacing: 5px;
+    text-transform: uppercase;
+}

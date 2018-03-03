@@ -6,25 +6,119 @@ $(document).ready(function () {
     var lettersGuessed;
     var myWord;
     var reset;
+    var arrLtrsGuessed;
 
-
-
+    var wordBank = [
+        'power',
+        'thing',
+        'piano',
+        'queen',
+        'chest',
+        'month',
+        'death',
+        'hotel',
+        'blood',
+        'drama',
+        'honey',
+        'event',
+        'tooth',
+        'studio',
+        'recipe',
+        'advice',
+        'aspect',
+        'office',
+        'cousin',
+        'cancer',
+        'speech',
+        'device',
+        'tennis',
+        'extent',
+        'camera',
+        'leader',
+        'speaker',
+        'revenue',
+        'teacher',
+        'arrival',
+        'student',
+        'thought',
+        'context',
+        'session',
+        'outcome',
+        'science',
+        'problem',
+        'bedroom',
+        'library',
+        'article',
+        'housing',
+        'alcohol',
+        'surgery',
+        'judgment',
+        'shopping',
+        'currency',
+        'employer',
+        'security',
+        'director',
+        'property',
+        'relation',
+        'election',
+        'database',
+        'internet',
+        'instance',
+        'audience',
+        'category',
+        'weakness',
+        'medicine',
+        'platform',
+        'agreement',
+        'promotion',
+        'chocolate',
+        'operation',
+        'direction',
+        'apartment',
+        'tradition',
+        'employment',
+        'television',
+        'technology',
+        'assumption',
+        'obligation',
+        'connection',
+        'percentage',
+        'difficulty',
+        'protection',
+        'appointment',
+        'measurement',
+        'requirement',
+        'negotiation',
+        'advertising',
+        'information',
+        'temperature',
+        'combination',
+        'environment',
+        'distribution',
+        'organization',
+        'significance',
+    ]
+    ;
     function initGame() {
         tries = 0;
         wins = 0;
         answer = "";
         guesses = 0;    
         lettersGuessed = "";
-        myWord = "elephant";
+        myWord = wordBank[Math.floor((Math.random() * wordBank.length) + 0)];
         reset = 0;
+        arrLtrsGuessed = [];
         for (var i =1; i<=myWord.length; i++) {
             answer += "_";
         }
         
         maxTries = myWord.length * 3;
     }
-
-
+    function blink_text(selector) {
+        $(selector).fadeOut(500);
+        $(selector).fadeIn(500);
+    }
+    
     initGame();
 
 
@@ -39,13 +133,25 @@ $(document).ready(function () {
         "hmLettersGuessed" : lettersGuessed,
     }
 
+    $('#hmLabelWins',
+    '#hmLabelAnswer',
+    '#hmLabelGuessesLeft',
+    '#hmLabelLettersGuessed',
+    ).show();
 
-    function peekaboo(color) {
-        for (var element in varFields) {
-            // console.log("ELEMENT " + element);
-            var x = document.getElementById(element);
-            x.style.color = color;
-            // console.log("ELEMENT " + x);
+    function labelsDisplay(toggle) {
+        if (toggle) {
+            $('#hmLabelWins',
+            '#hmLabelAnswer',
+            '#hmLabelGuessesLeft',
+            '#hmLabelLettersGuessed',
+            ).show();
+        } else {
+            $('#hmLabelWins',
+            '#hmLabelAnswer',
+            '#hmLabelGuessesLeft',
+            '#hmLabelLettersGuessed',
+            ).hide();
         }
     }
 
@@ -64,53 +170,64 @@ $(document).ready(function () {
 
 
     window.onload = function() {
-        peekaboo('black');
+        labelsDisplay(false);
 
         document.onkeypress = function(event) {
             if (!reset) {
-                console.log("game is starting");
+                initGame();
+                $('#startMsg').css('color','black');
                 showValues();
-                peekaboo('white');
-                var x = document.getElementById("startMsg");
-                x.style.color = 'black';
+                labelsDisplay(true);
                 reset++;
             } else {
                 if (1) { // Check for matched characters and update answer
                     // Clear the message area
-                    var x = document.getElementById("startMsg");
-                    x.style.color = 'black'
-                    var key = event.key;
+                    $('#startMsg').css('color','black');
+
+                    var key = event.key.toLowerCase();
                     // make sure an alphabetic key was pressed
                     if (   (event.keyCode >= 65 && event.keyCode <= 90)
                         || (event.keyCode >= 97 && event.keyCode <= 122)
                         ) {
-                        tries++;
 
-                        document.getElementById("hmGuessesLeft").innerText = maxTries - tries;
+                        // bump tries
+                        tries++;
+                        $('#hmGuessesLeft').text(maxTries - tries);
+
+                        // record the letter guessed
+                        if (arrLtrsGuessed.indexOf(key) == -1) {
+                            arrLtrsGuessed.push(key);
+                            $('#hmLettersGuessed').text(arrLtrsGuessed.join(""));
+                        }
+
                         var arrAnswer = answer.split("");
                         console.log("ANSWER ARRAY " + arrAnswer);
                         for (var i = 0; i < myWord.length; i++) {
-                            if (myWord[i] == key.toLowerCase()) {
-                                arrAnswer[i]=key.toLowerCase();
+                            if (myWord[i] == key) {
+                                arrAnswer[i]=key;
                             }
                         }
                         answer = arrAnswer.join("");
-                        var x = document.getElementById('hmAnswer');
-                        x.innerText = answer;
+                        $('#hmAnswer').text(answer);
                     } else {
-                        var x = document.getElementById("startMsg");
-                        x.innerText = "ONLY ALPHABETIC KEYS ARE VALID !!!!";
-                        x.style.color = 'red';
+                        $('#startMsg').text('ALPHABETIC KEYS ONLY');
+                        $('#startMsg').css('color','red');
                     }
                 }
-
-                if (1) { // Did user guess the word !!!
-                    if (answer == myWord) {
-                        var x = document.getElementById("startMsg");
-                        x.innerText = "YOU WIN !!!!";
-                        x.style.color = 'white';
-                        initGame();
+                console.log("tries " + tries);
+                if (1) { // Check win lose
+                    if (answer == myWord) { // Did user guess the word?
+                        $('#startMsg').text("YOU WIN !!!!");
+                        $('#startMsg').css('color','white');
+                        setInterval(blink_text('#startMsg'), 1000);
+                        reset = 0;
+                    } else if (tries==maxTries) { // Is users out of tries?
+                        $('#startMsg').text("YOU LOST!!!   The word was " + myWord);
+                        $('#startMsg').css('color','red');
+                        setInterval(blink_text('#startMsg'), 1000);
+                        reset = 0;
                     }
+
                 }
             }
         }
