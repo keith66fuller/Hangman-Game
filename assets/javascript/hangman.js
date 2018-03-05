@@ -235,11 +235,8 @@ $(document).ready(function () {
                         $('#hmValueAnswer').text(answer);
                         if (correct) {
                             newMiscImg();
-                            //newMiscSnd();
                             console.log("correct letter");
                         }
-
-
                     } else {
                         $('#startMsg').text('ALPHABETIC KEYS ONLY');
                         $('#startMsg').css('color','red');
@@ -256,6 +253,7 @@ $(document).ready(function () {
                         wins++;
                         $('#hmValueWins').text(wins);
                         reset = 0;
+                        newMiscSnd();
                     } else if (tries==maxTries) { // Is users out of tries?
                         $('#startMsg').text("YOU LOST!!!   The word was " + myWord + ".    PRESS ENTER FOR ANOTHER GAME");
                         reset = 0;
